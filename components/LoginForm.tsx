@@ -12,11 +12,43 @@ import {
   RiEyeOffLine,
   RiLock2Line,
 } from "@remixicon/react";
+import axios from 'axios';
+
+type FormData = {
+  email: string;
+  password: string;
+};
 
 const LoginForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const uniqueId = React.useId();
+  const [formData, setFormData] = useState<FormData>({
+    email: '',
+    password: '',
+  });
 
+  // Handle input change
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('/api/auth/login', formData);
+      alert('Login successful');
+    } catch (error) {
+      alert('Login failed');
+    }
+  };
+
+  // Input component
   interface InputProps {
     id: string;
     label: string;
@@ -39,7 +71,14 @@ const LoginForm: React.FC = () => {
       <Input.Root>
         <Input.Wrapper>
           <Input.Icon as={Icon} />
-          <Input.Input id={id} type={type} placeholder={placeholder} />
+          <Input.Input
+            id={id}
+            name={id}  // Add name attribute to link it with formData
+            value={formData[id as keyof FormData]}  // Bind value to formData
+            onChange={handleChange}  // Handle change for formData
+            type={type}
+            placeholder={placeholder}
+          />
           {extra}
         </Input.Wrapper>
       </Input.Root>
@@ -48,7 +87,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <div className="col-span-2 flex flex-col items-center justify-center">
-      <div className="w-full max-w-md flex flex-col gap-6 items-center">
+      <form onSubmit={handleSubmit} className="w-full max-w-md flex flex-col gap-6 items-center">
         <header className="text-center flex flex-col gap-1">
           <h2 className="text-title-h4 text-neutral-900">Hesabınıza giriş yapın</h2>
           <p className="text-text-sub-600 text-paragraph-md">
@@ -85,7 +124,7 @@ const LoginForm: React.FC = () => {
 
         <div className="flex justify-between w-full items-center">
           <div className="flex items-center gap-2">
-            <Checkbox.Root id={`${uniqueId}-remember`}  />
+            <Checkbox.Root id={`${uniqueId}-remember`} />
             <Label.Root
               className="text-paragraph-sm"
               htmlFor={`${uniqueId}-remember`}
@@ -94,16 +133,26 @@ const LoginForm: React.FC = () => {
             </Label.Root>
           </div>
           <Link
-             href="#"
-            className="text-neutral-900 border-neutral-900 hover:underline "
-            >
-             Şifremi sıfırla
-             </Link>
+            href="#"
+            className="text-neutral-900 border-neutral-900 hover:underline"
+          >
+            Şifremi sıfırla
+          </Link>
         </div>
 
-        <FancyButton.Root className="w-full font-medium ">Giriş Yap</FancyButton.Root>
-        <span>Hesabınız yokmu ? <Link href={"/register"} className=" hover:underline">Hesap Oluştur</Link></span>
-      </div>
+        <FancyButton.Root
+          type="submit"
+          className="w-full font-medium"
+        >
+          Giriş Yap
+        </FancyButton.Root>
+        <span>
+          Hesabınız yok mu?{" "}
+          <Link href={"/register"} className="hover:underline">
+            Hesap Oluştur
+          </Link>
+        </span>
+      </form>
     </div>
   );
 };
