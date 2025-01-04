@@ -102,6 +102,7 @@ const LoginForm: React.FC = () => {
         </div>
 
         <FancyButton.Root className="w-full font-medium ">Giriş Yap</FancyButton.Root>
+        <span>Hesabınız yokmu ? <Link href={"/register"} className=" hover:underline">Hesap Oluştur</Link></span>
       </div>
     </div>
   );
