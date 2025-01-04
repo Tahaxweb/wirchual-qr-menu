@@ -9,7 +9,7 @@ function Page({ userId }: PageProps) {
   return (
     <div>
       {userId ? (
-        <p>Giriş yapmış kullanıcının ID'si: {userId}</p>
+        <p>Giriş yapmış kullanıcının ID&apos;si: {userId}</p>
       ) : (
         <p>Kullanıcı girişi yapılmamış.</p>
       )}

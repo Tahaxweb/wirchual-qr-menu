@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     })
 
     return NextResponse.json({ message: 'User created', user: newUser }, { status: 201 })
-  } catch (error) {
+  } catch (_error) { // Error'ı kullanmadık, bu yüzden _error olarak değiştirdik
     return NextResponse.json({ error: 'User creation failed' }, { status: 500 })
   }
 }
