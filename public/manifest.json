@@ -6,7 +6,7 @@
     "background_color": "#ffffff",
     "display": "standalone",
     "scope": "/",
-    "start_url": "/",
+    "start_url": "/admin/dashboard",
     "icons": [
       {
         "src": "/icons/icon-192x192.png",
