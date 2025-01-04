@@ -11,18 +11,18 @@ interface FormFieldProps {
   id: string;
   type: string;
   placeholder: string;
-  icon?: React.ComponentType<any>; // İkon için opsiyonel bir component türü
-  [key: string]: any; // Diğer props'ları almak için
+  icon?: React.ElementType; // İkon için React ElementType kullanıyoruz
+  rest?: Record<string, unknown>; // "rest" prop'u için Record<string, unknown> tipi belirliyoruz
 }
 
-function FormField({ label, id, type, placeholder, icon: Icon, ...rest }: FormFieldProps) {
+function FormField({ label, id, type, placeholder, icon: Icon, rest }: FormFieldProps) {
   return (
     <div className="w-full flex flex-col gap-1">
       <Label.Root htmlFor={id}>{label}</Label.Root>
       <Input.Root>
         <Input.Wrapper>
           {Icon && <Input.Icon as={Icon} />}
-          <Input.Input id={id} type={type} placeholder={placeholder} {...rest} />
+          <Input.Input id={id} type={type} placeholder={placeholder} {...(rest || {})} />
         </Input.Wrapper>
       </Input.Root>
     </div>
