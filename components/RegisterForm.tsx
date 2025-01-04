@@ -5,7 +5,17 @@ import * as Input from "@/components/ui/input";
 import * as Label from "@/components/ui/label";
 import { RiMailLine, RiEyeLine, RiEyeOffLine, RiPhoneLine, RiLock2Line } from "@remixicon/react";
 
-function FormField({ label, id, type, placeholder, icon: Icon, ...rest }: any) {
+// Tür tanımlamaları ekleyelim
+interface FormFieldProps {
+  label: string;
+  id: string;
+  type: string;
+  placeholder: string;
+  icon?: React.ComponentType<any>; // İkon için opsiyonel bir component türü
+  [key: string]: any; // Diğer props'ları almak için
+}
+
+function FormField({ label, id, type, placeholder, icon: Icon, ...rest }: FormFieldProps) {
   return (
     <div className="w-full flex flex-col gap-1">
       <Label.Root htmlFor={id}>{label}</Label.Root>
