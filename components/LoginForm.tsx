@@ -12,28 +12,26 @@ import {
   RiEyeOffLine,
   RiLock2Line,
 } from "@remixicon/react";
-import axios from 'axios';
-
-type FormData = {
-  email: string;
-  password: string;
-};
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const LoginForm: React.FC = () => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const uniqueId = React.useId();
-  const [formData, setFormData] = useState<FormData>({
-    email: '',
-    password: '',
-  });
+  
+  // State for email and password
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: value,
-    }));
+    if (name === "email") {
+      setEmail(value);
+    } else if (name === "password") {
+      setPassword(value);
+    }
   };
 
   // Handle form submission
@@ -41,10 +39,15 @@ const LoginForm: React.FC = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('/api/auth/login', formData);
-      alert('Login successful');
+      const response = await axios.post("/api/auth/login", { email, password });
+
+      if (response.status === 200) {
+        window.location.href = "/admin/dashboard";
+      } else {
+        alert("Login failed");
+      }
     } catch (error) {
-      alert('Login failed');
+      alert("Login failed");
     }
   };
 
@@ -73,9 +76,9 @@ const LoginForm: React.FC = () => {
           <Input.Icon as={Icon} />
           <Input.Input
             id={id}
-            name={id}  // Add name attribute to link it with formData
-            value={formData[id as keyof FormData]}  // Bind value to formData
-            onChange={handleChange}  // Handle change for formData
+            name={id} // Add name attribute to link it with formData
+            value={id === "email" ? email : password} // Bind value to the respective state
+            onChange={handleChange} // Handle change for formData
             type={type}
             placeholder={placeholder}
           />

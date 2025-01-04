@@ -1,28 +1,35 @@
-import { NextResponse } from 'next/server'
-import bcrypt from 'bcryptjs'
-import prisma from '../../../../lib/prisma' // Prisma client'ı buraya göre ayarlayın
+import { NextRequest, NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+import * as argon2 from 'argon2';
+import { serialize } from 'cookie'
 
-export async function POST(req: Request) {
+const prisma = new PrismaClient();
+
+export async function POST(req: NextRequest) {
   try {
-    const { email, password } = await req.json()
-
+    const body = await req.json();
+    const { email, password } = body;
     const user = await prisma.user.findUnique({
       where: { email },
-    })
+    });
 
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 400 })
+    if (!user || !(await argon2.verify(user.password, password))) {
+      return NextResponse.json({ error: 'Email ya da şifre hatalı' }, { status: 401 });
     }
+    
 
-    const isPasswordCorrect = await bcrypt.compare(password, user.password)
+    const cookie = serialize('auth_token', user.id.toString(), {
+      path: '/',
+      httpOnly: true,
+      maxAge: 60 * 60 * 7 * 24,
+    });
 
-    if (!isPasswordCorrect) {
-      return NextResponse.json({ error: 'Invalid password' }, { status: 400 })
-    }
+    const response = NextResponse.json({ message: 'Login successful' });
+    response.headers.set('Set-Cookie', cookie);
 
-    // Burada JWT token veya session yönetimi ekleyebilirsiniz
-    return NextResponse.json({ message: 'Login successful', user })
+    return response;
   } catch (error) {
-    return NextResponse.json({ error: 'Login failed' }, { status: 500 })
+    console.error('Login error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

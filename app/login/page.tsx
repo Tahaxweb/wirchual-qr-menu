@@ -3,7 +3,6 @@ import LoginForm from "@/components/LoginForm";
 import Image from "next/image";
 import React from "react";
 
-
 const Login = () => {
   return (
     <div className="grid h-screen grid-cols-1 p-3 md:grid-cols-2 lg:grid-cols-5">

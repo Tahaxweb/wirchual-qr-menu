@@ -5,6 +5,7 @@ import * as Input from "@/components/ui/input";
 import * as Label from "@/components/ui/label";
 import { RiMailLine, RiEyeLine, RiEyeOffLine, RiPhoneLine, RiLock2Line } from "@remixicon/react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 // Tür tanımlamaları ekleyelim
 interface FormFieldProps {
@@ -42,6 +43,7 @@ function FormField({ label, id, name, type, placeholder, icon: Icon, rest, onCha
 }
 
 function RegisterForm() {
+    const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
@@ -64,7 +66,7 @@ function RegisterForm() {
 
     try {
       const response = await axios.post('/api/auth/signup', formData);
-      alert('User created successfully');
+      router.push("/login");
     } catch (error) {
       alert('User creation failed');
     }
