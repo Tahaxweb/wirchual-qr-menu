@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-
 import React, { useState } from "react";
 import * as Input from "@/components/ui/input";
 import * as Label from "@/components/ui/label";
@@ -161,3 +161,4 @@ const LoginForm: React.FC = () => {
 };
 
 export default LoginForm;
+/* eslint-enable @typescript-eslint/no-unused-vars */

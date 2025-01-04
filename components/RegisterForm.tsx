@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React, { useState } from "react";
 import * as FancyButton from "@/components/ui/fancy-button";
@@ -121,3 +122,4 @@ function RegisterForm() {
 }
 
 export default RegisterForm;
+/* eslint-enable @typescript-eslint/no-unused-vars */

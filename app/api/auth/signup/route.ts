@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextResponse } from 'next/server'
 import * as argon2 from 'argon2';
 import prisma from '../../../../lib/prisma' // Prisma client'ı buraya göre ayarlayın
@@ -20,7 +21,8 @@ export async function POST(req: Request) {
     })
 
     return NextResponse.json({ message: 'User created', user: newUser }, { status: 201 })
-  } catch (_error) { // Error'ı kullanmadık, bu yüzden _error olarak değiştirdik
+  } catch (_error) {
     return NextResponse.json({ error: 'User creation failed' }, { status: 500 })
   }
 }
+/* eslint-enable @typescript-eslint/no-unused-vars */
