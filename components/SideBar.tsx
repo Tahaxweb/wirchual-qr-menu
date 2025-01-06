@@ -1,9 +1,11 @@
 "use client"
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { RiApps2Line, RiCloseLine, RiFolder2Line, RiHome6Line, RiMenuLine, RiPriceTag3Line } from '@remixicon/react'
+import { RiApps2Line, RiCloseLine, RiFolder2Line, RiHome6Line, RiLogoutBoxLine, RiMenuLine, RiPriceTag3Line } from '@remixicon/react'
+import * as Dropdown from '@/components/ui/dropdown';
 import Image from 'next/image'
 
+import { useRouter } from 'next/navigation';
 
 const navigation = [
   { name: 'Dashboard', href: '#', icon: RiHome6Line, current: true },
@@ -18,6 +20,24 @@ function classNames(...classes : string[]) {
 
 export default function Sidebar({children}: {children: React.ReactNode}) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const router = useRouter();
+
+  const handleLogout = async (): Promise<void> => {
+    try {
+      const response = await fetch('/api/logout', {
+        method: 'GET',
+      });
+
+      if (response.ok) {
+        // Logout başarılı, giriş sayfasına yönlendir
+        router.push('/login');
+      } else {
+        console.error('Logout failed');
+      }
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
 
   return (
     <>
@@ -137,29 +157,44 @@ export default function Sidebar({children}: {children: React.ReactNode}) {
           </nav>
         </div>
 
-        <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-neutral-800 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
-        <a href="#">
-            <span className="sr-only">Your profile</span>
+        <div className="sticky top-0 z-40 flex items-center justify-between gap-x-6 bg-neutral-800 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
+        <button type="button" className="-m-2.5 p-2.5 text-gray-400 lg:hidden" onClick={() => setSidebarOpen(true)}>
+            <span className="sr-only">Open sidebar</span>
+            <RiMenuLine className="h-6 w-6 shrink-0 text-white" aria-hidden="true" />
+          </button>
+          <Dropdown.Root>
+          <Dropdown.Trigger asChild>
             <img
               className="h-10 w-10 rounded-full bg-neutral-800"
               src={"/icons/avatar.svg"}
               alt=""
             />
-          </a>
-          <div className="flex-1 text-sm font-semibold leading-6 text-white">Dashboard</div>
-         
-          <button type="button" className="-m-2.5 p-2.5 text-gray-400 lg:hidden" onClick={() => setSidebarOpen(true)}>
-            <span className="sr-only">Open sidebar</span>
-            <RiMenuLine className="h-6 w-6 shrink-0 text-white" aria-hidden="true" />
-          </button>
+            </Dropdown.Trigger>
+            <Dropdown.Content align='start' className=' mr-2 mt-2'>
+              <div onClick={handleLogout} className='py-2.5 hover:bg-neutral-100 hover:border  text-label-md flex gap-1  rounded-10 px-4'> <RiLogoutBoxLine/> Log out </div>
+              </Dropdown.Content>
+            </Dropdown.Root>
         </div>
-
-        <main className="lg:pl-20">
-          <div className="xl:pl-96">
-            <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
+        
+        <main className="lg:pl-24 pr-4">
+        <div className=' justify-end lg:flex  items-center  w-full hidden px-5 pt.2.5 lg:justify-end lg:block border-b h-14'>
+       
+          <Dropdown.Root>
+          <Dropdown.Trigger asChild>
+            <img
+              className="h-10 w-10 rounded-full bg-neutral-800"
+              src={"/icons/avatar.svg"}
+              alt=""
+            />
+            </Dropdown.Trigger>
+            <Dropdown.Content align='start' className=' mr-2 mt-2'>
+              <div onClick={handleLogout} className='py-2.5 hover:bg-neutral-100 hover:border  text-label-md flex gap-1  rounded-10 px-4'> <RiLogoutBoxLine/> Log out </div>
+              </Dropdown.Content>
+            </Dropdown.Root>
+        </div>
+ 
+             
             {children}
-            </div>
-          </div>
         </main>
       </div>
     </>
