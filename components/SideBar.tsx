@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 
 const navigation = [
   { name: 'Dashboard', href: '#', icon: RiHome6Line, current: true },
-  { name: 'Kategoriler', href: '#', icon: RiFolder2Line, current: false },
+  { name: 'Kategoriler', href: '/admin/categorys', icon: RiFolder2Line, current: false },
   { name: 'Ürünler', href: '#', icon: RiPriceTag3Line, current: false },
   { name: 'Eklentiler', href: '#', icon:RiApps2Line ,current: false },
 ]
