@@ -5,8 +5,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import {
   RiApps2Line,
   RiCloseLine,
+  RiFileChart2Line,
   RiFolder2Line,
-  RiHome6Line,
   RiLogoutBoxLine,
   RiMenuLine,
   RiPriceTag3Line,
@@ -14,9 +14,10 @@ import {
 import * as Dropdown from "@/components/ui/dropdown";
 import Image from "next/image";
 import { useRouter , usePathname } from "next/navigation";
+import * as Avatar from '@/components/ui/avatar';
 
 const navigation = [
-  { name: "Dashboard", href: "/admin/dashboard", icon: RiHome6Line, current: true },
+  { name: "Analizler", href: "/admin/dashboard", icon: RiFileChart2Line, current: true },
   { name: "Kategoriler", href: "/admin/categorys", icon: RiFolder2Line, current: false },
   { name: "Ürünler", href: "#", icon: RiPriceTag3Line, current: false },
   { name: "Eklentiler", href: "#", icon: RiApps2Line, current: false },
@@ -97,15 +98,15 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                     </div>
                   </Transition.Child>
 
-                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-neutral-800 px-6 pb-2 ring-1 ring-white/10">
+                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-blueberry-500 px-6 pb-2 ring-1 ring-white/10">
                     <div className="flex gap-3 h-16 shrink-0 items-center">
-                      <Image
-                        className=" h-12 w-auto"
-                        src={"/icons/icon-logo.svg"}
-                        alt="Your Company"
-                        width={124}
-                        height={124}
-                      />
+                    <Image
+              className=" h-14 w-auto"
+              src={"/icons/logo-white.svg"}
+              alt="Your Company"
+              width={64}
+              height={64}
+            />
                       <span className=" text-paragraph-lg  font-semibold text-white">
                         Wirchual QR Menu
                       </span>
@@ -118,8 +119,8 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                               href={item.href}
                               className={classNames(
                                 pathname === item.href
-                                  ? "bg-neutral-600 text-white"
-                                  : "text-gray-400 hover:text-white hover:bg-neutral-700",
+                                  ? "bg-blueberry-100 text-blueberry-500"
+                                  : "text-blueberry-100 hover:text-blueberry-500 hover:bg-blueberry-200",
                                 "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                               )}
                             >
@@ -141,17 +142,17 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
         </Transition.Root>
 
         {/* Static sidebar for desktop */}
-        <div className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:block lg:w-20 lg:overflow-y-auto lg:bg-neutral-800 pt-4 lg:pb-4">
+        <div className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:block  lg:w-24 lg:overflow-y-auto lg:bg-blueberry-500 pt-4 lg:pb-4 lg:flex flex-col justify-between ">
           <div className="flex h-16 shrink-0 items-center justify-center">
             <Image
               className=" h-14 w-auto"
-              src={"/icons/icon-logo.svg"}
+              src={"/icons/logo-white.svg"}
               alt="Your Company"
               width={64}
               height={64}
             />
           </div>
-          <div className="border-b border-neutral-500 mx-auto my-3   w-16"></div>
+         
           <nav>
           <ul role="list" className="flex flex-col items-center space-y-1">
               {navigation.map((item) => (
@@ -160,9 +161,9 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                     href={item.href}
                     className={classNames(
                       pathname === item.href
-                        ? "bg-neutral-600 text-white"
+                        ? "bg-blueberry-100 text-blueberry-500"
                         : "text-white hover:text-white",
-                      "group flex text-[10px] max-w-14 rounded-lg min-h-14 px-2 items-center max-h-16 justify-center gap-1 flex-col"
+                      "group flex text-[10px] max-w-18 font-medium rounded-lg min-h-14 px-4 py-2 items-center max-h-16 justify-center gap-1 flex-col"
                     )}
                   >
                     <item.icon
@@ -174,10 +175,13 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
                 </li>
               ))}
             </ul>
+       
           </nav>
+          <div></div>
+          <div></div>
         </div>
 
-        <div className="sticky top-0 z-40 flex items-center justify-between gap-x-6 bg-neutral-800 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
+        <div className="sticky top-0 z-40 flex items-center justify-between gap-x-6 bg-blueberry-500 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
           <button
             type="button"
             className="-m-2.5 p-2.5 text-gray-400 lg:hidden"
@@ -187,46 +191,39 @@ export default function Sidebar({ children }: { children: React.ReactNode }) {
             <RiMenuLine className="h-6 w-6 shrink-0 text-white" aria-hidden="true" />
           </button>
           <Dropdown.Root>
-            <Dropdown.Trigger asChild>
-              <img
-                className="h-10 w-10 rounded-full bg-neutral-800"
-                src={"/icons/avatar.svg"}
-                alt=""
-              />
-            </Dropdown.Trigger>
-            <Dropdown.Content align="start" className="mr-2 mt-2">
-              <div
-                onClick={handleLogout}
-                className="py-2.5 hover:bg-neutral-100 hover:border  text-label-md flex gap-1  rounded-10 px-4"
-              >
-                <RiLogoutBoxLine /> Log out
-              </div>
-            </Dropdown.Content>
-          </Dropdown.Root>
+              <Dropdown.Trigger asChild>
+             <span> <Avatar.Root  placeholderType='company'  size="40"/></span>
+              </Dropdown.Trigger>
+              <Dropdown.Content align="start" className="mr-2 mt-2">
+                <Dropdown.Item
+                  onClick={handleLogout}
+               
+                >
+                  <RiLogoutBoxLine /> Log out
+                </Dropdown.Item>
+              </Dropdown.Content>
+            </Dropdown.Root>
         </div>
 
-        <main className="lg:pl-24 pr-4">
+        <main className="lg:pl-24 ">
           <div className="justify-end lg:flex  items-center  w-full hidden px-5 pt.2.5 lg:justify-end lg:block border-b h-14">
             <Dropdown.Root>
               <Dropdown.Trigger asChild>
-                <img
-                  className="h-10 w-10 rounded-full bg-neutral-800"
-                  src={"/icons/avatar.svg"}
-                  alt=""
-                />
+             <span> <Avatar.Root  placeholderType='company'  size="40"/></span>
               </Dropdown.Trigger>
               <Dropdown.Content align="start" className="mr-2 mt-2">
-                <div
+                <Dropdown.Item
                   onClick={handleLogout}
-                  className="py-2.5 hover:bg-neutral-100 hover:border  text-label-md flex gap-1  rounded-10 px-4"
+               
                 >
                   <RiLogoutBoxLine /> Log out
-                </div>
+                </Dropdown.Item>
               </Dropdown.Content>
             </Dropdown.Root>
           </div>
-
-          {children}
+<div className=" p-4">
+{children}
+</div>
         </main>
       </div>
     </>

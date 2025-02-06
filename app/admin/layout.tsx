@@ -7,9 +7,11 @@ function page({
   children: React.ReactNode
 }) {
   return (
+
    <Sidebar>
-    {children}
+   {children}
    </Sidebar>
+
   )
 }
 
